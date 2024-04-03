@@ -1,0 +1,120 @@
+{% extends 'layouts/main.html' %}
+
+{% block body %}
+  {% load static %}
+  {% for item in aswin %}
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>{{ item.name }} - Product Detail</title>
+      <style>
+          /* Add your custom styles here */
+          body {
+              font-family: 'Arial', sans-serif;
+              margin: 20px;
+          }
+
+          img {
+              max-width: 100%;
+              height: auto;
+              margin-bottom: 20px;
+          }
+
+          h1 {
+              color: #333;
+          }
+
+          p {
+              color: #555;
+              margin-bottom: 10px;
+          }
+
+          label {
+              display: block;
+              margin-bottom: 5px;
+          }
+
+          input {
+              width: 50px;
+              text-align: center;
+          }
+
+          button {
+              padding: 10px 20px;
+              margin-top: 10px;
+              cursor: pointer;
+              border: none;
+              border-radius: 5px;
+              font-size: 16px;
+              font-weight: bold;
+          }
+
+          .add-to-cart {
+              background-color: #f1c40f; /* Yellow color for Add to Cart */
+              color: #fff;
+              margin-right: 10px;
+          }
+
+          .buy-now {
+              background-color: #2ecc71; /* Green color for Buy Now */
+              color: #fff;
+          }
+
+          /* Add more styles as needed */
+      </style>
+  </head>
+
+  <body>
+      <h1>{{ item.name }}</h1>
+
+      <img src="{{ item.product_image.url }}" alt="{{ item.name }} Image">
+
+      <p>Description: {{ item.description }}</p>
+      <p>Quantity: {{ item.quantity }}</p>
+      <p>Original Price: Rs {{ item.orginal_price }}</p>
+      <p>Selling Price: Rs {{ item.selling_price }}</p>
+
+      <form method="post" action="{% url 'add_to_cart' item.category.slug item.slug %}" id="product-form">
+        {% csrf_token %}
+        <!-- Add quantity input field -->
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity" value="1" min="1">
+        
+        <button type="submit" class="add-to-cart">Add to Cart</button>
+    </form>
+    
+    <form method="post" action="{% url 'buy_now' item.category.slug item.slug %}" id="buy-now-form">
+        {% csrf_token %}
+        <!-- Add quantity input field -->
+        
+        
+        <button type="submit" class="buy-now">Buy Now</button>
+    </form>
+      <script>
+          function increment() {
+              var quantityInput = document.getElementById('quantity');
+              quantityInput.value = parseInt(quantityInput.value) + 1;
+          }
+
+          function decrement() {
+              var quantityInput = document.getElementById('quantity');
+              var currentValue = parseInt(quantityInput.value);
+              if (currentValue > 1) {
+                  quantityInput.value = currentValue - 1;
+              }
+          }
+      </script>
+  </body>
+
+  </html>
+  {% endfor %}
+{% endblock body %}
+
+
+
+
+
